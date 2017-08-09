@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class='col-sm-6 col-sm-offset-3 text-center'>
+<div class='col-sm-6 col-sm-offset-0 text-left'>
 <h1>Регистрация нового пользователя</h1>
 <hr/>
-<form class='text-left' method="post" action="{% url 'create-user' %}">
-{% csrf_token %}
-{{ form.as_p }}
+<form method="POST" action=""> {% csrf_token %}
 
-<input type="submit" value="Регистрация" />
+    <label for="username">Имя пользователя</label>
+    <input type="text" id="username" name="username" class="form-control" placeholder="Латинские буквы" required autofocus>
+    <label for="full_name">ФИО</label>
+    <input type="text" id="full_name" name="full_name" class="form-control" placeholder="Кириллица" required autofocus>
+    <label for="birth_date">Дата рождения</label>
+    <input type="date" id="birth_date" name="birth_date" class="form-control" placeholder="Дата рождения" required autofocus>
+    <button class="btn btn-lg btn-primary" type="submit">Создать пользователя</button>
+
+</form>
+
+</div>
 
 {% endblock %}

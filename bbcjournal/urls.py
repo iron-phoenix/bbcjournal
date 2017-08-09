@@ -16,9 +16,9 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from profiles.views import CreateUserView
+from profiles.views import create_user_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^create-user/', CreateUserView.as_view(), name='create-user')
+    url(r'^create-user/', create_user_view, name='create-user')
 ]

@@ -4,8 +4,8 @@ from django import forms
 User = get_user_model()
 
 class CreateUserForm(forms.ModelForm):
-    full_name = forms.CharField()
-    birth_date = forms.DateField()
+    full_name = forms.CharField(label="ФИО")
+    birth_date = forms.DateField(label="Дата прождения")
     class Meta:
         model = User
         fields = ('username',)
