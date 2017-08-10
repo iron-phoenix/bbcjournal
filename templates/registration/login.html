@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-0 text-left'>
+<h2>Вход в систему</h2>
+<hr/>
+<form class='text-left' method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+    {{ form|bootstrap }}
+
+<input class="btn btn-lg btn-primary" type="submit" value="Войти" />
+</form>
+</div>
+
+{% endblock %}
