@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-0 text-left'>
+    <h2>Курсы</h2>
+    <hr/>
+    <div class="list-group">
+        {% for course in object_list %}
+		<a href="{{ course.pk }}" class="list-group-item list-group-item-action">{{ course.name }}</a>
+        {% endfor %}
+	</div>
+	<a href="http://google.com" class="btn btn-lg btn-primary">Добавить новый курс</a>
+
+</div>
+
+{% endblock %}
