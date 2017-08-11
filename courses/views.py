@@ -10,12 +10,12 @@ from .models import Course, Lesson
 class CoursesView(LoginRequiredMixin, ListView):
     model = Course
 
-    login_url = '/login'
+    login_url = '/profiles/login'
 
 class CourseDetailView(LoginRequiredMixin, DetailView):
     model = Course
 
-    login_url = '/login'
+    login_url = '/profiles/login'
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
