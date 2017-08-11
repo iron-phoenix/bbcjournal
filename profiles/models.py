@@ -2,6 +2,15 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 
+class Group(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
 class Profile(models.Model):
     type_choises = (
         ('A', 'Администратор'),
@@ -13,6 +22,7 @@ class Profile(models.Model):
     user_type = models.CharField(max_length=1, choices=type_choises, default="T")
     full_name = models.CharField(max_length=255, blank=True, null=True)
     birth_date = models.DateField(blank=True, null=True)
+    group = models.ForeignKey(Group, blank=True, null=True)
 
     def __str__(self):
         return self.user.username

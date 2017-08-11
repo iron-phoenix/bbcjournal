@@ -16,7 +16,7 @@ def register_view(request, *args, **kwargs):
     form = CreateUserForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/admin')
+        return HttpResponseRedirect('/')
     return render(request, template_name, {'form': form, 'permissions': permissions})
 
 def login_view(request, *args, **kwargs):
