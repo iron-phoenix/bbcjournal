@@ -1,7 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
+
+from django.views.generic.list import ListView
 
 User = get_user_model()
 
@@ -29,9 +32,12 @@ def login_view(request, *args, **kwargs):
         user_obj = User.objects.get(username__iexact=username_)
         print(user_obj)
         login(request, user_obj)
-        return HttpResponseRedirect('/register')
+        return HttpResponseRedirect(request.POST.get('next'))
     return render(request, template_name, {'form': form})
 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/login')
+
+class StudentsView(ListView):
+    model =ListView
