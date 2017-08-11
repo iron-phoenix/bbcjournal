@@ -20,6 +20,8 @@ def register_view(request, *args, **kwargs):
     return render(request, template_name, {'form': form, 'permissions': permissions})
 
 def login_view(request, *args, **kwargs):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/courses')
     template_name = 'registration/login.html'
     form = UserLoginForm(request.POST or None)
     if form.is_valid():
@@ -27,9 +29,9 @@ def login_view(request, *args, **kwargs):
         user_obj = User.objects.get(username__iexact=username_)
         print(user_obj)
         login(request, user_obj)
-        return HttpResponseRedirect("/register")
-    return render(request, template_name, {"form": form})
+        return HttpResponseRedirect('/register')
+    return render(request, template_name, {'form': form})
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect("/login")
+    return HttpResponseRedirect('/login')

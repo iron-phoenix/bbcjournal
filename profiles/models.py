@@ -14,6 +14,12 @@ class Profile(models.Model):
     full_name = models.CharField(max_length=255, blank=True, null=True)
     birth_date = models.DateField(blank=True, null=True)
 
+    def __str__(self):
+        return self.user.username
+
+    def __unicode__(self):
+        return self.user.username
+
 def post_save_user_receiver(sender, instance, created, **kwargs):
     if created:
        profile, is_created = Profile.objects.get_or_create(user=instance)
