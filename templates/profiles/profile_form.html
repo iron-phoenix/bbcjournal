@@ -4,9 +4,9 @@
 {% block content %}
 <div class='col-sm-6 col-sm-offset-0 text-left'>
     {% if permissions %}
-    <h2>Информация о пользователе</h2>
+    <h2>{{ user_name }}</h2>
     <hr/>
-    <form class='text-left' method="post" action="{% url 'user_update' %}">
+    <form class='text-left' method="post" action="">
     {% csrf_token %}
 
         {{ form|bootstrap }}

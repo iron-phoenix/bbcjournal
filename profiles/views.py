@@ -13,7 +13,7 @@ from .models import *
 
 User = get_user_model()
 
-from .forms import CreateUserForm, UserLoginForm
+from .forms import CreateUserForm, UserLoginForm, UpdateStudentForm, UpdateTeacherForm
 
 @login_required(login_url='/profiles/login')
 def register_view(request, *args, **kwargs):
@@ -75,20 +75,44 @@ class GroupsView(LoginRequiredMixin, ListView):
 
     login_url = '/profiles/login'
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UpdateStudentView(UpdateView):
     model = Profile
-    fields = ['full_name',
-              'birth_date']
+    form_class = UpdateStudentForm
+    success_url = '/profiles/students'
 
-    login_url = '/profiles/login'
+    user_name = ''
 
-    def get_queryset(self):
-        pass
+    def get_object(self, queryset=None):
+        profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
+        self.user_name = profile.user.username
+        return profile
 
     def get_context_data(self, **kwargs):
-        context = super(UserUpdateView, self).get_context_data(**kwargs)
+        context = super(UpdateStudentView, self).get_context_data(**kwargs)
         permissions = False
         if self.request.user.profile.user_type == 'A':
             permissions = True
         context['permissions'] = permissions
+        context['user_name'] = self.user_name
+        return context
+
+class UpdateTeacherView(UpdateView):
+    model = Profile
+    form_class = UpdateTeacherForm
+    success_url = '/profiles/teachers'
+
+    user_name = ''
+
+    def get_object(self, queryset=None):
+        profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
+        self.user_name = profile.user.username
+        return profile
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateTeacherView, self).get_context_data(**kwargs)
+        permissions = False
+        if self.request.user.profile.user_type == 'A':
+            permissions = True
+        context['permissions'] = permissions
+        context['user_name'] = self.user_name
         return context

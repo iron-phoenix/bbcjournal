@@ -56,3 +56,31 @@ class UserLoginForm(forms.Form):
                 # log auth tries
                 raise forms.ValidationError("Invalid credentials")
         return super(UserLoginForm, self).clean(*args, **kwargs)
+
+class UpdateStudentForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['full_name',
+                  'birth_date',
+                  'user_type',
+                  'group']
+        widgets = {'birth_date': DateInput}
+        labels = {
+            'full_name': 'ФИО',
+            'birth_date': 'Дата рождения',
+            'user_type': 'Тип пользователя',
+            'group': 'Группа'
+        }
+
+class UpdateTeacherForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['full_name',
+                  'birth_date',
+                  'user_type']
+        widgets = {'birth_date': DateInput}
+        labels = {
+            'full_name': 'ФИО',
+            'birth_date': 'Дата рождения',
+            'user_type': 'Тип пользователя'
+        }
