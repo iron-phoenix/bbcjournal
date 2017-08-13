@@ -4,14 +4,13 @@
 {% block content %}
 <div class='col-sm-6 col-sm-offset-0 text-left'>
     {% if type == 'S' %}
-    <h2>Ученики</h2>
+    <h2>Студенты</h2>
     <hr/>
     <div class="list-group">
         {% for profile in object_list %}
 		<a href="students/{{ profile.pk }}" class="list-group-item list-group-item-action">{{ profile.full_name }}</a>
         {% endfor %}
 	</div>
-    <a href="http://google.com" class="btn btn-lg btn-primary">Добавить нового ученика</a>
     {% else %}
     <h2>Учителя</h2>
     <hr/>
@@ -20,8 +19,8 @@
 		<a href="teachers/{{ profile.pk }}" class="list-group-item list-group-item-action">{{ profile.full_name }}</a>
     {% endfor %}
     </div>
-    <a href="http://google.com" class="btn btn-lg btn-primary">Добавить нового учителя</a>
     {% endif %}
+    <a href="{% url 'register' %}" class="btn btn-lg btn-primary">Добавить нового пользователя</a>
 
 
 </div>

@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic.list import ListView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
+from django.views.generic.detail import DetailView
 
 from .models import *
 
@@ -80,11 +81,11 @@ class UpdateStudentView(UpdateView):
     form_class = UpdateStudentForm
     success_url = '/profiles/students'
 
-    user_name = ''
+    user_full_name = ''
 
     def get_object(self, queryset=None):
         profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
-        self.user_name = profile.user.username
+        self.user_full_name = profile.full_name
         return profile
 
     def get_context_data(self, **kwargs):
@@ -93,7 +94,7 @@ class UpdateStudentView(UpdateView):
         if self.request.user.profile.user_type == 'A':
             permissions = True
         context['permissions'] = permissions
-        context['user_name'] = self.user_name
+        context['user_full_name'] = self.user_full_name
         return context
 
 class UpdateTeacherView(UpdateView):
@@ -101,11 +102,11 @@ class UpdateTeacherView(UpdateView):
     form_class = UpdateTeacherForm
     success_url = '/profiles/teachers'
 
-    user_name = ''
+    user_full_name = ''
 
     def get_object(self, queryset=None):
         profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
-        self.user_name = profile.user.username
+        self.user_full_name = profile.full_name
         return profile
 
     def get_context_data(self, **kwargs):
@@ -114,5 +115,40 @@ class UpdateTeacherView(UpdateView):
         if self.request.user.profile.user_type == 'A':
             permissions = True
         context['permissions'] = permissions
-        context['user_name'] = self.user_name
+        context['user_full_name'] = self.user_full_name
+        return context
+
+class GroupDetailView(LoginRequiredMixin, DetailView):
+    model = ProfileGroup
+
+    login_url = '/profiles/login'
+
+    def get_context_data(self, **kwargs):
+        context = super(GroupDetailView, self).get_context_data(**kwargs)
+        object = kwargs.get('object')
+        students = Profile.objects.filter(group=object.pk)
+        permissions = False
+        if self.request.user.profile.user_type == 'A':
+            permissions = True
+        context['permissions'] = permissions
+        context['students'] = students
+        context['group_name'] = object.name
+        context['group_id'] = object.pk
+        return context
+
+class GroupDeleteView(DeleteView):
+    model = ProfileGroup
+    success_url = '/profiles/groups'
+
+class GroupCreateView(CreateView):
+    model = ProfileGroup
+    success_url = '/profiles/groups'
+    fields = ['name']
+
+    def get_context_data(self, **kwargs):
+        context = super(GroupCreateView, self).get_context_data(**kwargs)
+        permissions = False
+        if self.request.user.profile.user_type == 'A':
+            permissions = True
+        context['permissions'] = permissions
         return context

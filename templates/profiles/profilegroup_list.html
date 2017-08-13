@@ -7,10 +7,10 @@
     <hr/>
     <div class="list-group">
         {% for profilegroup in object_list %}
-		<a href="{{ profile.pk }}" class="list-group-item list-group-item-action">{{ profilegroup.name }}</a>
+		<a href="{% url 'groups' %}/{{ profilegroup.pk }}" class="list-group-item list-group-item-action">{{ profilegroup.name }}</a>
         {% endfor %}
 	</div>
-    <a href="http://google.com" class="btn btn-lg btn-primary">Добавить новую группу</a>
+    <a href="{% url 'groups_add' %}" class="btn btn-lg btn-primary">Добавить новую группу</a>
 </div>
 
 {% endblock %}

@@ -10,6 +10,10 @@ urlpatterns =[
     url(r'^students/(?P<pk>\d+)', UpdateStudentView.as_view(), name='user_update'),
     url(r'^teachers/(?P<pk>\d+)', UpdateTeacherView.as_view(), name='user_update'),
 
+    url(r'^groups/add', GroupCreateView.as_view(), name='groups_add'),
+    url(r'^groups/delete/(?P<pk>\d+)', GroupDeleteView.as_view(), name='groups_delete'),
+    url(r'^groups/(?P<pk>\d+)', GroupDetailView.as_view(), name='groups_detail'),
+
     url(r'^students', StudentsView.as_view(), name='students'),
     url(r'^teachers', TeachersView.as_view(), name='teachers'),
     url(r'^groups', GroupsView.as_view(), name='groups'),

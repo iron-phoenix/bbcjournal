@@ -22,7 +22,7 @@ class Profile(models.Model):
     user_type = models.CharField(max_length=1, choices=type_choises, default="T")
     full_name = models.CharField(max_length=255, blank=True, null=True)
     birth_date = models.DateField(blank=True, null=True)
-    group = models.ForeignKey(ProfileGroup, blank=True, null=True)
+    group = models.ForeignKey(ProfileGroup, blank=True, null=True, on_delete=models.SET_NULL)
     deactivation_date = models.DateField(blank=True, null=True)
 
     def __str__(self):

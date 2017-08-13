@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-0 text-left'>
+    <h2>Удаление группы</h2>
+    <hr/>
+    <div class="list-group">
+        <form class='text-left' action="" method="post">{% csrf_token %}
+            <p>Вы действительно хотите удалить "{{ object }}"?</p>
+            <input class="btn btn-lg btn-primary" type="submit" value="Да" />
+        </form>
+	</div>
+</div>
+
+{% endblock %}
