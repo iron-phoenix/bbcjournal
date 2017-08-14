@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 
 class ProfileGroup(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name = 'Имя группы')
 
     def __str__(self):
         return self.name

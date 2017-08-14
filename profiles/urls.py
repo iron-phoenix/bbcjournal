@@ -7,8 +7,8 @@ urlpatterns =[
     url(r'^login/', login_view, name='login'),
     url(r'^logout/', logout_view, name='logout'),
 
-    url(r'^students/(?P<pk>\d+)', UpdateStudentView.as_view(), name='user_update'),
-    url(r'^teachers/(?P<pk>\d+)', UpdateTeacherView.as_view(), name='user_update'),
+    url(r'^students/(?P<pk>\d+)', UpdateStudentView.as_view(), name='students'),
+    url(r'^teachers/(?P<pk>\d+)', UpdateTeacherView.as_view(), name='teachers'),
 
     url(r'^groups/add', GroupCreateView.as_view(), name='groups_add'),
     url(r'^groups/delete/(?P<pk>\d+)', GroupDeleteView.as_view(), name='groups_delete'),

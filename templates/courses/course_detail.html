@@ -8,10 +8,10 @@
     <div class="list-group">
         <h3>Уроки</h3>
         {% for lesson in lessons %}
-		<a href="{% url 'courses' %}lesson/{{ lesson.pk }}" class="list-group-item list-group-item-action">{{ lesson.name }}</a>
+		<a href="{% url 'lesson_detail' lesson.pk %}" class="list-group-item list-group-item-action">{{ lesson.name }}</a>
         {% endfor %}
 	</div>
-	<a href="http://google.com" class="btn btn-lg btn-primary">Добавить новый урок</a>
+	<a href="{% url 'add_lesson' %}" class="btn btn-lg btn-primary">Добавить новый урок</a>
 
 </div>
 

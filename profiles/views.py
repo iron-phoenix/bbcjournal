@@ -25,7 +25,12 @@ def register_view(request, *args, **kwargs):
     form = CreateUserForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/')
+        if form.cleaned_data['user_type'] == 'T':
+            return HttpResponseRedirect('/profiles/teachers')
+        elif form.cleaned_data['user_type'] == 'S':
+            return HttpResponseRedirect('/profiles/students')
+        else:
+            return HttpResponseRedirect('/')
     return render(request, template_name, {'form': form, 'permissions': permissions})
 
 def login_view(request, *args, **kwargs):
