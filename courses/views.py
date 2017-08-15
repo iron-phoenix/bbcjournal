@@ -19,6 +19,19 @@ class CoursesView(LoginRequiredMixin, ListView):
 
     login_url = '/profiles/login'
 
+class CourseCreateView(CreateView):
+    model = Course
+    fields = '__all__'
+    success_url = '/courses'
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseCreateView, self).get_context_data(**kwargs)
+        permissions = False
+        if self.request.user.profile.user_type == 'A':
+            permissions = True
+        context['permissions'] = permissions
+        return context
+
 class CourseDetailView(LoginRequiredMixin, DetailView):
     model = Course
 
@@ -96,6 +109,8 @@ def lesson_edit_view(request, *args, **kwargs):
         pks = get_students_pk(request.POST)
         for pk in pks:
             student_lesson = StudentLesson.objects.filter(Q(student = pk) & Q(lesson = kwargs.get('pk')))[0]
+            student_lesson.lesson.homework = request.POST['homework']
+            student_lesson.lesson.save()
             if 'precense' in pks[pk]:
                 student_lesson.precense = True
             else:

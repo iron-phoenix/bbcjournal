@@ -9,7 +9,7 @@ import string
 # Create your models here.
 
 class Course(models.Model):
-    name = models.CharField(max_length = 255)
+    name = models.CharField(max_length = 255, verbose_name = 'Название курса')
 
     def __str__(self):
         return self.name

@@ -5,7 +5,6 @@
 <div class='col-sm-6 col-sm-offset-0 text-left'>
     {% if permissions %}
     <h2>Добавление урока</h2>
-    <hr/>
 
     <form class='text-left' method="post" action="">
 
@@ -22,7 +21,7 @@
             {% for student_lesson in student_lessons %}
             <tr>
                 <td><label>{{ student_lesson.student.full_name }}</label></td>
-                <td><input id="precense-{{ student_lesson.student.pk}}" name="precense-{{ student_lesson.student.pk}}" type="checkbox" checked="true"></label></td>
+                <td><input id="precense-{{ student_lesson.student.pk}}" name="precense-{{ student_lesson.student.pk}}" type="checkbox" checked="true"></div></td>
                 <td><select id="mark-{{ student_lesson.student.pk}}" name="mark-{{ student_lesson.student.pk}}">
                     <option>-</option>
                     <option>A</option>
@@ -38,9 +37,13 @@
 
 
         </table>
-    </div>
 
-    <input class="btn btn-lg btn-primary" type="submit" value="Сохранить"/>
+        <label>Домашнее задание</label>
+        <p><textarea lass="form-control" rows="5" cols="100" id="homework" name="homework"></textarea></p>
+        <p><input class="btn btn-lg btn-primary" type="submit" value="Сохранить"/></p>
+
+
+    </div>
 
     </form>
 

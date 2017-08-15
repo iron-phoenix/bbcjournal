@@ -4,7 +4,7 @@
 {% block content %}
 <div class='col-sm-6 col-sm-offset-0 text-left'>
     {% if permissions %}
-    <h2>{{ user_full_name }}</h2>
+    <h2>Новый курс</h2>
     <hr/>
     <form class='text-left' method="post" action="">
     {% csrf_token %}
@@ -14,7 +14,7 @@
     <input class="btn btn-lg btn-primary" type="submit" value="Сохранить" />
     </form>
     {% else %}
-        <h2 style="color: red">У Вас нет прав на добавление новых пользователей</h2>
+        <h2 style="color: red">У Вас нет прав на добавление новых курсов</h2>
     {% endif %}
 	
 	{% if user_type == 'T' %}
