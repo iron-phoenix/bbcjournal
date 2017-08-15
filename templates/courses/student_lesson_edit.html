@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-0 text-left'>
+    {% if permissions %}
+    <h2>Добавление урока</h2>
+    <hr/>
+
+    <form class='text-left' method="post" action="">
+
+        {% csrf_token %}
+
+    <div class="col-sm-10 col-sm-offset-0 text-left">
+        <table class="table">
+            <tr>
+                <td>ФИО ученика</td>
+                <td>Присутствие</td>
+                <td>Оценка</td>
+                <td>Причина отсутствия</td>
+            </tr>
+            {% for student_lesson in student_lessons %}
+            <tr>
+                <td><label>{{ student_lesson.student.full_name }}</label></td>
+                <td><input id="precense-{{ student_lesson.student.pk}}" name="precense-{{ student_lesson.student.pk}}" type="checkbox" checked="true"></label></td>
+                <td><select id="mark-{{ student_lesson.student.pk}}" name="mark-{{ student_lesson.student.pk}}">
+                    <option>-</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                    <option>D</option>
+                    <option>E</option>
+                    <option>F</option>
+                </select></td>
+                <td><input id="reason_for_abcense-{{ student_lesson.student.pk}}" name="reason_for_abcense-{{ student_lesson.student.pk}}" type="text" disabled></input></td>
+            </tr>
+            {% endfor %}
+
+
+        </table>
+    </div>
+
+    <input class="btn btn-lg btn-primary" type="submit" value="Сохранить"/>
+
+    </form>
+
+    {% else %}
+        <h2 style="color: red">У Вас нет прав на добавление новых уроков</h2>
+    {% endif %}
+</div>
+
+<script>
+{% for student_lesson in student_lessons %}
+document.getElementById('precense-{{ student_lesson.student.pk}}').onchange = function() {
+    document.getElementById('reason_for_abcense-{{ student_lesson.student.pk}}').disabled = this.checked;
+    document.getElementById('mark-{{ student_lesson.student.pk}}').disabled = !this.checked;
+};
+{% endfor %}
+</script>
+
+</div>
+
+{% endblock %}

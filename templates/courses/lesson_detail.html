@@ -49,7 +49,7 @@ td.green_red {
                 {% if student_lesson.precense %}
                     <td class="green_red">{{ student_lesson.mark }}</td>
                 {% else %}
-                    <td class="red_white">{{ student_lesson.mark }}</td>
+                    <td class="red_white">{{ student_lesson.reason_for_abcense }}</td>
                 {% endif %}
 
             </tr>

@@ -7,15 +7,16 @@
     <h2>Добавление урока</h2>
     <hr/>
     <form class='text-left' method="post" action="">
-    {% csrf_token %}
+        {% csrf_token %}
 
         {{ form|bootstrap }}
-
-    <input class="btn btn-lg btn-primary" type="submit" value="Сохранить" />
+        <input class="btn btn-lg btn-primary" type="submit" value="Сохранить"/>
     </form>
+
     {% else %}
-        <h2 style="color: red">У Вас нет прав на добавление новых уроков</h2>
+    <h2 style="color: red">У Вас нет прав на добавление новых уроков</h2>
     {% endif %}
+</div>
 
 </div>
 
