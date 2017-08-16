@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-0 text-left'>
+    <h2>{{ user_full_name }}</h2>
+    {% for lesson in lessons %}
+    <div class="panel panel-success">
+        <div class="panel-heading">{{ lesson.name }} - {{ lesson.date }}</div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <tr>
+                    <td>Курс</td>
+                    <td>{{ lesson.course }}</td>
+                </tr>
+                <tr>
+                    <td>Тип урока</td>
+                    <td>{{ lesson.type }}</td>
+                </tr>
+                <tr>
+                    <td>Количество студентов</td>
+                    <td>{{ lesson.students }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+
+
+</div>
+
+{% endblock %}

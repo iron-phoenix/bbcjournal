@@ -125,3 +125,25 @@ def lesson_edit_view(request, *args, **kwargs):
         student_lessons = StudentLesson.objects.filter(lesson = kwargs.get('pk'))
         return render(request, template_name, {'student_lessons': student_lessons, 'permissions': permissions})
 
+def teacher_lessons_view(request, *args, **kwargs):
+    template_name = 'courses/teacher_lessons.html'
+    profile = Profile.objects.filter(pk=kwargs['pk'])[0]
+    user_full_name = profile.full_name
+    lessons_query = Lesson.objects.filter(teacher=kwargs['pk']).order_by('-id')[:10]
+    lessons = []
+    n = 0
+    for lesson in lessons_query:
+        lessons.append({})
+        lessons[n]['name'] = lesson.name
+        lessons[n]['date'] = lesson.date
+        lessons[n]['type'] = lesson.get_type_display()
+        lessons[n]['course'] = lesson.course.name
+        students = StudentLesson.objects.filter(lesson=lesson)
+        lessons[n]['students'] = len(students)
+        n += 1
+
+    return render(request, template_name, {'lessons': lessons, 'user_full_name': user_full_name})
+
+def student_lessons_view(request, *args, **kwargs):
+    pass
+

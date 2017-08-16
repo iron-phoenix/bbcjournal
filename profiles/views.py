@@ -87,10 +87,14 @@ class UpdateStudentView(UpdateView):
     success_url = '/profiles/students'
 
     user_full_name = ''
+    user_type = ''
+    user_id = ''
 
     def get_object(self, queryset=None):
         profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
         self.user_full_name = profile.full_name
+        self.user_type = profile.user_type
+        self.user_id = profile.pk
         return profile
 
     def get_context_data(self, **kwargs):
@@ -100,6 +104,8 @@ class UpdateStudentView(UpdateView):
             permissions = True
         context['permissions'] = permissions
         context['user_full_name'] = self.user_full_name
+        context['user_type'] = self.user_type
+        context['user_id'] = self.user_id
         return context
 
 class UpdateTeacherView(UpdateView):
@@ -108,10 +114,14 @@ class UpdateTeacherView(UpdateView):
     success_url = '/profiles/teachers'
 
     user_full_name = ''
+    user_type = ''
+    user_id = ''
 
     def get_object(self, queryset=None):
         profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
         self.user_full_name = profile.full_name
+        self.user_type = profile.user_type
+        self.user_id = profile.pk
         return profile
 
     def get_context_data(self, **kwargs):
@@ -121,6 +131,8 @@ class UpdateTeacherView(UpdateView):
             permissions = True
         context['permissions'] = permissions
         context['user_full_name'] = self.user_full_name
+        context['user_type'] = self.user_type
+        context['user_id'] = self.user_id
         return context
 
 class GroupDetailView(LoginRequiredMixin, DetailView):
