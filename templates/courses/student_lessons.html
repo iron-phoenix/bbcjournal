@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+
+<style>
+
+
+td.red_white {
+	background-color: #F78181;
+	color: #505050;
+}
+
+td.green_red {
+	background-color: #58FA58;
+	color: #505050;
+}
+</style>
+
+<div class='col-sm-6 col-sm-offset-0 text-left'>
+    <h2>{{ user_full_name }}</h2>
+    {% for lesson in lessons %}
+    <div class="panel panel-info">
+        <div class="panel-heading">{{ lesson.lesson.name }} - {{ lesson.lesson.date }}</div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>Курс</th>
+                    <td>{{ lesson.lesson.course }}</td>
+                </tr>
+                <tr>
+                    <th>Тип урока</th>
+                    <td>{{ lesson.lesson.get_type_display }}</td>
+                </tr>
+                <tr>
+                    <th>Успеваемость</th>
+                    {% if lesson.precense %}
+                        <td class="bg-success">{{ lesson.mark }}</td>
+                    {% else %}
+                        <td class="bg-danger">{{ lesson.reason_for_abcense }}</td>
+                    {% endif %}
+                </tr>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+
+
+</div>
+
+{% endblock %}

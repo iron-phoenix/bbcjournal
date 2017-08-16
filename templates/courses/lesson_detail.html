@@ -4,28 +4,21 @@
 {% block content %}
 
 <style>
-    td {
+    th, td {
 	text-align: center;
 	vertical-align: middle;
-	border: #505050 solid 1px !important;
 }
 
-td.red_white {
-	background-color: #F78181;
-	color: #505050;
-}
 
-td.green_red {
-	background-color: #58FA58;
-	color: #505050;
-}
+
 </style>
 
 <div class='col-sm-6 col-sm-offset-0 text-left'>
     <h2>{{ object.name }}</h2>
     <hr/>
     <p>{{ object.description }}</p>
-    <p><b>Домашнее задание:</b></p> <p>{{ object.homework }}</p>
+    <p><b>Домашнее задание:</b></p>
+    <p>{{ object.homework }}</p>
     <p><b>Дата:</b> {{ object.date|date }}</p>
     <p><b>Тип урока:</b> {{ object.get_type_display }}</p>
     <hr/>
@@ -35,26 +28,27 @@ td.green_red {
 
     <hr/>
 
-    <h3>Результаты урока</h3>
+    <div class="panel panel-info">
+        <div class="panel-heading">Результаты урока</div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>ФИО ученика</th>
+                    <th>Оценки</th>
+                </tr>
+                {% for student_lesson in student_lessons %}
+                <tr>
+                    <td>{{ student_lesson.student.full_name }}</td>
+                    {% if student_lesson.precense %}
+                    <td class="bg-success">{{ student_lesson.mark }}</td>
+                    {% else %}
+                    <td class="bg-danger">{{ student_lesson.reason_for_abcense }}</td>
+                    {% endif %}
 
-    <div class="col-sm-0 col-sm-offset-0 text-left">
-	    <table class="table table-bordered">
-            <tr>
-			    <td>ФИО ученика</td>
-			    <td>Оценки</td>
-		    </tr>
-            {% for student_lesson in student_lessons %}
-            <tr>
-                <td>{{ student_lesson.student.full_name }}</td>
-                {% if student_lesson.precense %}
-                    <td class="green_red">{{ student_lesson.mark }}</td>
-                {% else %}
-                    <td class="red_white">{{ student_lesson.reason_for_abcense }}</td>
-                {% endif %}
-
-            </tr>
-            {% endfor %}
-        </table>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
 </div>

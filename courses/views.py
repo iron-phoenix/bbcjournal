@@ -145,5 +145,9 @@ def teacher_lessons_view(request, *args, **kwargs):
     return render(request, template_name, {'lessons': lessons, 'user_full_name': user_full_name})
 
 def student_lessons_view(request, *args, **kwargs):
-    pass
+    template_name = 'courses/student_lessons.html'
+    profile = Profile.objects.filter(pk=kwargs['pk'])[0]
+    user_full_name = profile.full_name
+    lessons = StudentLesson.objects.filter(student=kwargs['pk']).order_by('-id')[:10]
+    return render(request, template_name, {'lessons': lessons, 'user_full_name': user_full_name})
 
