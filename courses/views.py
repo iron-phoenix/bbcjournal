@@ -10,7 +10,7 @@ from django.db.models import Q
 from .models import Course, Lesson, StudentLesson
 from .forms import LessonCreateForm, StudentLessonEditForm
 
-from profiles.models import Profile
+from profiles.models import Profile, ProfileGroup
 
 # Create your views here.
 
@@ -150,4 +150,14 @@ def student_lessons_view(request, *args, **kwargs):
     user_full_name = profile.full_name
     lessons = StudentLesson.objects.filter(student=kwargs['pk']).order_by('-id')[:10]
     return render(request, template_name, {'lessons': lessons, 'user_full_name': user_full_name})
+
+def group_journal_view(request, *args, **kwargs):
+    template_name = 'courses/group_journal.html'
+    group = ProfileGroup.objects.filter(pk=kwargs['pk'])[0]
+    students = Profile.objects.filter(group=group)
+    student_lessons = []
+    for student in students:
+        student_lessons_query = StudentLesson.objects.filter(student=student).order_by('-id')[:10]
+        student_lessons.append(student_lessons_query)
+    return render(request, template_name, {'student_lessons': student_lessons})
 

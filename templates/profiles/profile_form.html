@@ -16,7 +16,7 @@
     {% else %}
         <h2 style="color: red">У Вас нет прав на добавление новых пользователей</h2>
     {% endif %}
-
+    <br>
     {% if user_type == 'T' %}
     <a href="{% url 'teacher_lessons' user_id %}" class="btn btn-lg btn-primary">Просмотреть последние уроки</a>
     {% elif user_type == 'S' %}

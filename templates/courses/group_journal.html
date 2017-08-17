@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block content %}
+
+<style>
+    th, td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+</style>
+
+<div class='col-sm-offset-0 text-left'>
+    <div class="panel panel-info">
+        <div class="panel-heading">Результаты группы</div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>ФИО ученика</th>
+                    {% for student_lesson in student_lessons.0 %}
+                    <td><a href="{% url 'lesson_detail' student_lesson.lesson.pk %}">{{ student_lesson.lesson.date|date:"d M" }}</a></td>
+                    {% endfor %}
+                </tr>
+                {% for student_lesson_set in student_lessons %}
+                <tr>
+                    <th><a href="{% url 'students' student_lesson_set.0.student.pk %}">{{ student_lesson_set.0.student.full_name }}</a></th>
+                    {% for student_lesson in student_lesson_set %}
+
+                    {% if student_lesson.precense %}
+                    <td class="bg-success">{{ student_lesson.mark }}</td>
+                    {% else %}
+                    <td class="bg-danger">{{ student_lesson.reason_for_abcense }}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
