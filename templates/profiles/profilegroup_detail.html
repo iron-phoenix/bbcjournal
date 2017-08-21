@@ -8,15 +8,15 @@
     <div class="list-group">
         <h3>Студенты</h3>
         {% for student in students %}
-		<a href="{% url 'students' %}/{{ student.pk }}" class="list-group-item list-group-item-action">{{ student.full_name }}</a>
+		<a href="{% url 'profiles:students_detail' student.pk %}" class="list-group-item list-group-item-action">{{ student.full_name }}</a>
         {% endfor %}
 	</div>
     {% if permissions %}
-    <a href="{% url 'groups_delete' group_id %}" class="btn btn-lg btn-primary">Удалить группу</a>
+    <a href="{% url 'profiles:groups_delete' group_id %}" class="btn btn-lg btn-primary">Удалить группу</a>
     {% endif%}
     <br>
     <br>
-    <a href="{% url 'group_journal' group_id %}" class="btn btn-lg btn-primary">Журнал группы</a>
+    <a href="{% url 'courses:groups_journal' group_id %}" class="btn btn-lg btn-primary">Журнал группы</a>
 </div>
 
 {% endblock %}

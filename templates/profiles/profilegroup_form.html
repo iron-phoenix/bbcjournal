@@ -6,7 +6,7 @@
     {% if permissions %}
     <h2>Новая группа</h2>
     <hr/>
-    <form class='text-left' method="post" action="{% url 'groups_add' %}">
+    <form class='text-left' method="post" action="{% url 'profiles:groups_add' %}">
     {% csrf_token %}
 
         {{ form|bootstrap }}

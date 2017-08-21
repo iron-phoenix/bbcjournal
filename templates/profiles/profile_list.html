@@ -8,7 +8,7 @@
     <hr/>
     <div class="list-group">
         {% for profile in object_list %}
-		<a href="students/{{ profile.pk }}" class="list-group-item list-group-item-action">{{ profile.full_name }}</a>
+		<a href="{% url 'profiles:students_detail' profile.pk %}" class="list-group-item list-group-item-action">{{ profile.full_name }}</a>
         {% endfor %}
 	</div>
     {% else %}
@@ -16,11 +16,11 @@
     <hr/>
     <div class="list-group">
     {% for profile in object_list %}
-		<a href="teachers/{{ profile.pk }}" class="list-group-item list-group-item-action">{{ profile.full_name }}</a>
+		<a href="{% url 'profiles:teachers_detail' profile.pk %}" class="list-group-item list-group-item-action">{{ profile.full_name }}</a>
     {% endfor %}
     </div>
     {% endif %}
-    <a href="{% url 'register' %}" class="btn btn-lg btn-primary">Добавить нового пользователя</a>
+    <a href="{% url 'profiles:register' %}" class="btn btn-lg btn-primary">Добавить нового пользователя</a>
 
 
 </div>

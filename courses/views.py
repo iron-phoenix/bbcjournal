@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 from .models import Course, Lesson, StudentLesson
 from .forms import LessonCreateForm, StudentLessonEditForm
@@ -19,10 +20,12 @@ class CoursesView(LoginRequiredMixin, ListView):
 
     login_url = '/profiles/login'
 
-class CourseCreateView(CreateView):
+class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
     fields = '__all__'
     success_url = '/courses'
+
+    login_url = '/profiles/login'
 
     def get_context_data(self, **kwargs):
         context = super(CourseCreateView, self).get_context_data(**kwargs)
@@ -44,9 +47,11 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
         context['lessons'] = lessons
         return context
 
-class LessonCreateView(CreateView):
+class LessonCreateView(LoginRequiredMixin, CreateView):
     model = Lesson
     form_class = LessonCreateForm
+
+    login_url = '/profiles/login'
 
     def get_success_url(self):
         return '/courses/edit_lesson/' + str(self.object.pk)
@@ -74,8 +79,10 @@ class LessonCreateView(CreateView):
 
         return super(LessonCreateView, self).form_valid(form)
 
-class LessonDetailView(DetailView):
+class LessonDetailView(LoginRequiredMixin, DetailView):
     model = Lesson
+
+    login_url = '/profiles/login'
 
     def get_context_data(self, **kwargs):
         context = super(LessonDetailView, self).get_context_data(**kwargs)
@@ -84,10 +91,12 @@ class LessonDetailView(DetailView):
         context['student_lessons'] = student_lessons
         return context
 
-class LessonEditView(UpdateView):
+class LessonEditView(LoginRequiredMixin, UpdateView):
     model = Lesson
     fields = ['homework']
     template_name = 'courses/student_lesson_edit.html'
+
+    login_url = '/profiles/login'
 
 def get_students_pk(post):
     pks = {}
@@ -100,6 +109,7 @@ def get_students_pk(post):
             pks[n][key[:f]] = post[key]
     return pks
 
+@login_required(login_url='/profiles/login')
 def lesson_edit_view(request, *args, **kwargs):
     permissions = False
     if request.user.profile.user_type == 'T':
@@ -125,6 +135,7 @@ def lesson_edit_view(request, *args, **kwargs):
         student_lessons = StudentLesson.objects.filter(lesson = kwargs.get('pk'))
         return render(request, template_name, {'student_lessons': student_lessons, 'permissions': permissions})
 
+@login_required(login_url='/profiles/login')
 def teacher_lessons_view(request, *args, **kwargs):
     template_name = 'courses/teacher_lessons.html'
     profile = Profile.objects.filter(pk=kwargs['pk'])[0]
@@ -144,6 +155,7 @@ def teacher_lessons_view(request, *args, **kwargs):
 
     return render(request, template_name, {'lessons': lessons, 'user_full_name': user_full_name})
 
+@login_required(login_url='/profiles/login')
 def student_lessons_view(request, *args, **kwargs):
     template_name = 'courses/student_lessons.html'
     profile = Profile.objects.filter(pk=kwargs['pk'])[0]
@@ -151,13 +163,14 @@ def student_lessons_view(request, *args, **kwargs):
     lessons = StudentLesson.objects.filter(student=kwargs['pk']).order_by('-id')[:10]
     return render(request, template_name, {'lessons': lessons, 'user_full_name': user_full_name})
 
+@login_required(login_url='/profiles/login')
 def group_journal_view(request, *args, **kwargs):
     template_name = 'courses/group_journal.html'
     group = ProfileGroup.objects.filter(pk=kwargs['pk'])[0]
     students = Profile.objects.filter(group=group)
     student_lessons = []
     for student in students:
-        student_lessons_query = StudentLesson.objects.filter(student=student).order_by('-id')[:10]
+        student_lessons_query = StudentLesson.objects.filter(student=student)[:10]
         student_lessons.append(student_lessons_query)
     return render(request, template_name, {'student_lessons': student_lessons})
 

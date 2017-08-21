@@ -25,6 +25,8 @@ class Profile(models.Model):
     group = models.ForeignKey(ProfileGroup, blank=True, null=True, on_delete=models.SET_NULL)
     deactivation_date = models.DateField(blank=True, null=True)
 
+    is_password_changed = models.BooleanField(default = False)
+
     def __str__(self):
         return self.user.username
 

@@ -22,9 +22,9 @@
     <p><b>Дата:</b> {{ object.date|date }}</p>
     <p><b>Тип урока:</b> {{ object.get_type_display }}</p>
     <hr/>
-    <p><b>Курс:</b> <a href="{% url 'course_detail' object.course.pk %}">{{ object.course.name }}</a></p>
-    <p><b>Учитель:</b> <a href="{% url 'teachers' object.teacher.pk %}">{{ object.teacher.full_name }}</a></p>
-    <p><b>Группа:</b> <a href="{% url 'groups_detail' object.group.pk %}">{{ object.group.name }}</a></p>
+    <p><b>Курс:</b> <a href="{% url 'courses:course_detail' object.course.pk %}">{{ object.course.name }}</a></p>
+    <p><b>Учитель:</b> <a href="{% url 'profiles:teachers_detail' object.teacher.pk %}">{{ object.teacher.full_name }}</a></p>
+    <p><b>Группа:</b> <a href="{% url 'profiles:groups_detail' object.group.pk %}">{{ object.group.name }}</a></p>
 
     <hr/>
 

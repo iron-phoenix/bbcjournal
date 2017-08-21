@@ -17,14 +17,18 @@
         <div class="panel-body">
             <table class="table table-bordered">
                 <tr>
+                    {% if student_lessons.0 %}
                     <th>ФИО ученика</th>
+                    {% endif %}
                     {% for student_lesson in student_lessons.0 %}
-                    <td><a href="{% url 'lesson_detail' student_lesson.lesson.pk %}">{{ student_lesson.lesson.date|date:"d M" }}</a></td>
+                    <td><a href="{% url 'courses:lesson_detail' student_lesson.lesson.pk %}">{{ student_lesson.lesson.date|date:"d M" }}</a></td>
                     {% endfor %}
                 </tr>
                 {% for student_lesson_set in student_lessons %}
                 <tr>
-                    <th><a href="{% url 'students' student_lesson_set.0.student.pk %}">{{ student_lesson_set.0.student.full_name }}</a></th>
+                    {% if student_lesson_set.0 %}
+                    <th><a href="{% url 'profiles:students_detail' student_lesson_set.0.student.pk %}">{{ student_lesson_set.0.student.full_name }}</a></th>
+                    {% endif %}
                     {% for student_lesson in student_lesson_set %}
 
                     {% if student_lesson.precense %}

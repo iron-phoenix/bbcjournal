@@ -6,6 +6,8 @@
     {% if permissions %}
     <h2>{{ user_full_name }}</h2>
     <hr/>
+    <h4><b>Имя пользователя:</b> {{ username }}</h4>
+    <hr/>
     <form class='text-left' method="post" action="">
     {% csrf_token %}
 
@@ -18,9 +20,9 @@
     {% endif %}
     <br>
     {% if user_type == 'T' %}
-    <a href="{% url 'teacher_lessons' user_id %}" class="btn btn-lg btn-primary">Просмотреть последние уроки</a>
+    <a href="{% url 'courses:teacher_lessons' user_id %}" class="btn btn-lg btn-primary">Просмотреть последние уроки</a>
     {% elif user_type == 'S' %}
-    <a href="{% url 'student_lessons' user_id %}" class="btn btn-lg btn-primary">Просмотреть последние уроки</a>
+    <a href="{% url 'courses:student_lessons' user_id %}" class="btn btn-lg btn-primary">Просмотреть последние уроки</a>
     {% endif %}
 
 </div>

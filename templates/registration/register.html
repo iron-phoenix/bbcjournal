@@ -6,7 +6,7 @@
     {% if permissions %}
     <h2>Регистрация нового пользователя</h2>
     <hr/>
-    <form class='text-left' method="post" action="{% url 'register' %}">
+    <form class='text-left' method="post" action="">
     {% csrf_token %}
 
         {{ form|bootstrap }}

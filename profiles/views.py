@@ -1,10 +1,13 @@
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
@@ -43,6 +46,8 @@ def login_view(request, *args, **kwargs):
         user_obj = User.objects.get(username__iexact=username_)
         print(user_obj)
         login(request, user_obj)
+        if not user_obj.profile.is_password_changed:
+            return redirect('profiles:change_password')
         return HttpResponseRedirect('/courses')
     return render(request, template_name, {'form': form})
 
@@ -81,18 +86,22 @@ class GroupsView(LoginRequiredMixin, ListView):
 
     login_url = '/profiles/login'
 
-class UpdateStudentView(UpdateView):
+class UpdateStudentView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = UpdateStudentForm
     success_url = '/profiles/students'
 
+    login_url = '/profiles/login'
+
     user_full_name = ''
+    username = ''
     user_type = ''
     user_id = ''
 
     def get_object(self, queryset=None):
         profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
         self.user_full_name = profile.full_name
+        self.username = profile.user.username
         self.user_type = profile.user_type
         self.user_id = profile.pk
         return profile
@@ -104,22 +113,27 @@ class UpdateStudentView(UpdateView):
             permissions = True
         context['permissions'] = permissions
         context['user_full_name'] = self.user_full_name
+        context['username'] = self.username
         context['user_type'] = self.user_type
         context['user_id'] = self.user_id
         return context
 
-class UpdateTeacherView(UpdateView):
+class UpdateTeacherView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = UpdateTeacherForm
     success_url = '/profiles/teachers'
 
+    login_url = '/profiles/login'
+
     user_full_name = ''
+    username = ''
     user_type = ''
     user_id = ''
 
     def get_object(self, queryset=None):
         profile = Profile.objects.filter(pk=self.kwargs['pk'])[0]
         self.user_full_name = profile.full_name
+        self.username = profile.user.username
         self.user_type = profile.user_type
         self.user_id = profile.pk
         return profile
@@ -131,6 +145,7 @@ class UpdateTeacherView(UpdateView):
             permissions = True
         context['permissions'] = permissions
         context['user_full_name'] = self.user_full_name
+        context['username'] = self.username
         context['user_type'] = self.user_type
         context['user_id'] = self.user_id
         return context
@@ -153,14 +168,18 @@ class GroupDetailView(LoginRequiredMixin, DetailView):
         context['group_id'] = object.pk
         return context
 
-class GroupDeleteView(DeleteView):
+class GroupDeleteView(LoginRequiredMixin, DeleteView):
     model = ProfileGroup
     success_url = '/profiles/groups'
 
-class GroupCreateView(CreateView):
+    login_url = '/profiles/login'
+
+class GroupCreateView(LoginRequiredMixin, CreateView):
     model = ProfileGroup
     success_url = '/profiles/groups'
     fields = ['name']
+
+    login_url = '/profiles/login'
 
     def get_context_data(self, **kwargs):
         context = super(GroupCreateView, self).get_context_data(**kwargs)
@@ -169,3 +188,25 @@ class GroupCreateView(CreateView):
             permissions = True
         context['permissions'] = permissions
         return context
+
+@login_required(login_url='/profiles/login')
+def change_password_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save(commit = False)
+            user.profile.is_password_changed = True
+            user.profile.save()
+            user.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('courses:courses')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'profiles/change_password.html', {
+        'form': form,
+        'user_name': request.user.username,
+        'is_password_changed': request.user.profile.is_password_changed
+    })

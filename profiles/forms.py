@@ -1,30 +1,57 @@
 from django.contrib.auth import get_user_model
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
+
+import cyrtranslit
+from django.template.defaultfilters import date
+from django.utils import formats
+from random import randrange
 
 from .models import Profile
 
 User = get_user_model()
 
+type_choises = type_choises = (
+        ('T', 'Учитель'),
+        ('S', 'Студент')
+    )
+
 class DateInput(forms.DateInput):
     input_type = 'date'
+
+    def _format_value(self, value):
+        return value
 
 class CreateUserForm(forms.ModelForm):
     full_name = forms.CharField(label="ФИО")
     birth_date = forms.DateField(label="Дата рождения", widget=DateInput)
-    user_type = forms.ChoiceField(label="Тип пользователя", choices=Profile.type_choises)
+    user_type = forms.ChoiceField(label="Тип пользователя", choices=type_choises)
 
     class Meta:
         model = User
-        fields = ('username',)
-        labels = {
-            'username': 'Имя пользователя'
-        }
+        fields = []
+
+    def clean_full_name(self):
+        full_name = self.cleaned_data['full_name']
+        fio = full_name.split()
+        if len(fio) < 2:
+            raise ValidationError('Неверный формат ФИО')
+        return full_name
 
     def save(self, commit = True):
         user = super(CreateUserForm, self).save(commit = False)
-        user.set_password("123456789") #TODO generate password
+        user.set_password("password")
         user.is_active = True
+
+        full_name = self.cleaned_data.get('full_name')
+        full_name_en = cyrtranslit.to_latin(full_name, 'ru')
+        fio = full_name_en.split()
+        username = fio[1][0].lower() + fio[2][0].lower() + fio[0].lower()
+        same_name_users = User.objects.filter(username__iexact=username)
+        if same_name_users:
+            username += str(randrange(100))
+        user.username = username
 
         if commit:
             user.save()
@@ -58,6 +85,8 @@ class UserLoginForm(forms.Form):
         return super(UserLoginForm, self).clean(*args, **kwargs)
 
 class UpdateStudentForm(forms.ModelForm):
+    user_type = forms.ChoiceField(label="Тип пользователя", choices=type_choises)
+
     class Meta:
         model = Profile
         fields = ['full_name',
@@ -72,7 +101,10 @@ class UpdateStudentForm(forms.ModelForm):
             'group': 'Группа'
         }
 
+
 class UpdateTeacherForm(forms.ModelForm):
+    user_type = forms.ChoiceField(label="Тип пользователя", choices=type_choises)
+
     class Meta:
         model = Profile
         fields = ['full_name',
