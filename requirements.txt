@@ -1,0 +1,5 @@
+cyrtranslit==0.4
+Django==1.11.4
+django-bootstrap-form==3.3
+pytz==2017.2
+six==1.10.0
