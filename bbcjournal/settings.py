@@ -23,15 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ur3v&nj@yible#fjf8+2lxoqvexl0er3)njou6bg$na1cz32ux'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bbcjournal.pythonanywhere.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+#    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -128,7 +128,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
+STATIC_ROOT = "/home/bbcjournal/bbcjournal/static/"
+
 STATIC_URL = '/static/'

@@ -67,7 +67,7 @@ class UserLoginForm(forms.Form):
                         message = 'Имя пользователя может содержать латинские буквы, цифры и следующие символы: ". @ + -" ',
                         code='invalid_username'
                     )])
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get("username")
