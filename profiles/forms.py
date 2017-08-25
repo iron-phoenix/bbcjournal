@@ -46,8 +46,14 @@ class CreateUserForm(forms.ModelForm):
 
         full_name = self.cleaned_data.get('full_name')
         full_name_en = cyrtranslit.to_latin(full_name, 'ru')
-        fio = full_name_en.split()
-        username = fio[1][0].lower() + fio[2][0].lower() + fio[0].lower()
+        full_name_clean = full_name_en.replace('#', '')
+        full_name_clean = full_name_clean.replace("'", "")
+
+        fio = full_name_clean.split()
+        if len(fio) == 2:
+            username = fio[1][0].lower() + fio[0].lower()
+        else:
+            username = fio[1][0].lower() + fio[2][0].lower() + fio[0].lower()
         same_name_users = User.objects.filter(username__iexact=username)
         if same_name_users:
             username += str(randrange(100))
